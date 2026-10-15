@@ -24,6 +24,25 @@ PY
     done
 }
 
+# Publish the failure to the ci-status branch so it can be read while the job waits.
+publish_status() {
+    local dir=/tmp/ci-status
+    rm -rf "$dir" && mkdir -p "$dir" && cd "$dir" || return
+    git init -q && git checkout -q -b ci-status
+    {
+        echo "run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+        echo "attempt: $1  rc: $2  state: $3  time: $(date -u +%FT%TZ)  minutes_left: $(minutes_left)"
+        df -h /build | tail -1
+        echo "---- errors ----"
+        grep -nE -A6 'error:|FAILED:|ERROR:|Error:|fatal:' /build/build.log | grep -v '^\[ *[0-9]*% ' | head -300
+        echo "---- tail ----"
+        tail -80 /build/build.log
+    } > status.txt
+    git add status.txt && git -c user.name=ci -c user.email=ci@localhost commit -qm "attempt $1: $3"
+    git push -qf "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY" ci-status
+    cd - > /dev/null
+}
+
 wait_for_fix() {
     local old_manifest=$1 now_manifest
     echo "::warning::Build failed. Waiting for a fix to be pushed ($(minutes_left)m left; cancel the run to stop)."
@@ -66,16 +85,18 @@ while :; do
     ) 2>&1 | tee /build/build.log
     rc=${PIPESTATUS[0]}
     df -h /build | tail -1
-    [ "$rc" = 0 ] && break
+    [ "$rc" = 0 ] && { publish_status "$attempt" 0 success; break; }
     if [ "$rc" = 124 ] || [ "$rc" = 130 ]; then
         echo "::warning::Build stopped at the time budget. ccache is saved; re-run the workflow to continue."
         break
     fi
     cp /build/build.log "/build/build-attempt$attempt.log"
-    [ "$WAIT_FOR_FIX" = true ] || break
+    if [ "$WAIT_FOR_FIX" != true ]; then publish_status "$attempt" "$rc" failed; break; fi
+    publish_status "$attempt" "$rc" waiting-for-fix
     head=$(manifest_head)
     wait_for_fix "$head" || break
-    resync_changed || break
+    resync_changed || { publish_status "$attempt" "$rc" resync-failed; break; }
     attempt=$((attempt + 1))
+    publish_status "$attempt" "" building
 done
 exit "$rc"

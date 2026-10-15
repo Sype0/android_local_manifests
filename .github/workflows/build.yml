@@ -126,10 +126,13 @@ jobs:
           CCACHE_DIR: /build/ccache
           CCACHE_COMPRESS: 1
           CCACHE_COMPRESSLEVEL: 6
+          GH_TOKEN: ${{ github.token }}
         run: |
           tail -3 /build/monitor.log
           ccache -M "$CCACHE_MAXSIZE"; ccache -z
-          # Copy so a pushed fix to this script can't change it mid-run.
+          # Pick up fixes pushed while syncing; copy so later pushes can't change the script mid-run.
+          git -C "$GITHUB_WORKSPACE/manifests" pull -q --ff-only || true
+          cp "$GITHUB_WORKSPACE/manifests/local_manifests.xml" .repo/local_manifests/
           cp "$GITHUB_WORKSPACE/manifests/ci/build.sh" /build/ci-build.sh
           rc=0
           VARIANT="${{ inputs.variant }}" TARGET="${{ inputs.target }}" WAIT_FOR_FIX="${{ inputs.wait_for_fix }}" \
@@ -137,9 +140,6 @@ jobs:
           ccache -s
           df -h /build; free -h
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
-          if [ "$rc" = 124 ] || [ "$rc" = 130 ]; then
-            echo "::warning::Build stopped at the time budget. ccache is saved; re-run the workflow to continue."
-          fi
           exit "$rc"
 
       - name: Save ccache
