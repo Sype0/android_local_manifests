@@ -24,7 +24,7 @@ env:
   DEVICE: topaz
   # GitHub kills the job at 360 min; leave room to save ccache + upload.
   JOB_BUDGET_MIN: 335
-  CCACHE_MAXSIZE: 8G
+  CCACHE_MAXSIZE: 5G
 
 jobs:
   build:
@@ -46,8 +46,12 @@ jobs:
       - name: Prepare build dir and swap
         run: |
           sudo mkdir -p /build && sudo chown "$USER:$USER" /build
-          sudo fallocate -l 16G /swapfile && sudo chmod 600 /swapfile
-          sudo mkswap /swapfile && sudo swapon /swapfile
+          # zram first (costs no disk), small disk swap as overflow.
+          sudo modprobe zram && echo zstd | sudo tee /sys/block/zram0/comp_algorithm
+          echo 12G | sudo tee /sys/block/zram0/disksize
+          sudo mkswap /dev/zram0 && sudo swapon -p 100 /dev/zram0
+          sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile
+          sudo mkswap /swapfile && sudo swapon -p 10 /swapfile
           df -h; free -h; nproc
 
       - name: Checkout local manifests
@@ -84,7 +88,14 @@ jobs:
           cp "$GITHUB_WORKSPACE/manifests/ci/remove_unneeded.xml" .repo/local_manifests/
           rc=0
           "$GITHUB_WORKSPACE/manifests/ci/sync.sh" || rc=$?
+          # Drop clang toolchains the build system does not reference (several GB each).
+          keep=$(grep -rhoE 'clang-r[0-9]+[a-z]?' build/soong build/make vendor/lineage 2>/dev/null | sort -u)
+          for d in prebuilts/clang/host/linux-x86/clang-r*; do
+            [ -L "$d" ] && continue
+            grep -qx "$(basename "$d")" <<< "$keep" || { echo "Removing unused $d"; rm -rf "$d"; }
+          done
           du -sh .repo 2>/dev/null; du -sh -- */ 2>/dev/null | sort -rh | head -15
+          du -sh prebuilts/*/ external/*/ 2>/dev/null | sort -rh | head -25
           tail -3 /build/monitor.log
           df -h /build
           exit $rc
