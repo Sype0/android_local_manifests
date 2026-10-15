@@ -72,13 +72,14 @@ resync_changed() {
     mv /tmp/heads.new /tmp/heads.old
 }
 
-project_heads > /tmp/heads.old
-attempt=1
+[ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
+attempt=${ATTEMPT:-1}
 while :; do
     left=$(minutes_left)
     [ "$left" -gt 5 ] || { rc=124; break; }
     echo "=== Attempt $attempt, building for at most ${left}m"
     (
+        set +u  # envsetup.sh is not nounset-clean
         source build/envsetup.sh
         breakfast "$DEVICE" "$VARIANT" || exit 1
         timeout --signal=INT --kill-after=2m "${left}m" m "$TARGET" -j"$(nproc)"
@@ -98,5 +99,8 @@ while :; do
     resync_changed || { publish_status "$attempt" "$rc" resync-failed; break; }
     attempt=$((attempt + 1))
     publish_status "$attempt" "" building
+    # Continue with the freshly pushed version of this script.
+    cp "$MANIFESTS_DIR/ci/build.sh" "/build/ci-build-$attempt.sh"
+    ATTEMPT=$attempt exec "/build/ci-build-$attempt.sh"
 done
 exit "$rc"
