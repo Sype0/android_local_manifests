@@ -72,6 +72,11 @@ resync_changed() {
     mv /tmp/heads.new /tmp/heads.old
 }
 
+# Projects dropped from the CI manifest after the tree was synced still sit on disk.
+for path in $(sed -n 's/.*<remove-project path="\([^"]*\)".*/\1/p' "$MANIFESTS_DIR/ci/remove_unneeded.xml"); do
+    [ -e "$path" ] && { echo "Removing $path (dropped in ci/remove_unneeded.xml)"; rm -rf "$path"; }
+done
+
 [ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
 attempt=${ATTEMPT:-1}
 while :; do

@@ -4,6 +4,7 @@
     <remove-project path="device/google/cuttlefish_prebuilts" />
     <remove-project path="device/google/cuttlefish_vmm" />
     <remove-project path="device/google/trout" />
+    <remove-project path="device/generic/trusty" />
     <remove-project path="prebuilts/android-emulator" />
     <remove-project path="prebuilts/qemu-kernel" />
     <remove-project path="external/chromiumos-config" />
