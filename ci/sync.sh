@@ -6,8 +6,9 @@ set -uo pipefail
 
 CHUNK=${CHUNK:-40}
 
-repo list -f > /tmp/projects.txt   # "<abs path> : <name>"
+repo list --all -f > /tmp/projects.txt   # "<abs path> : <name>"
 total=$(wc -l < /tmp/projects.txt)
+[ "$total" -gt 0 ] || { echo "No projects in manifest"; exit 1; }
 echo "Syncing $total projects in chunks of $CHUNK"
 
 sync_chunk() {
