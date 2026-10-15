@@ -11,6 +11,10 @@ on:
       target:
         description: make target
         default: bacon
+      wait_for_fix:
+        description: On failure, keep the tree and wait for a pushed fix instead of exiting
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -125,15 +129,11 @@ jobs:
         run: |
           tail -3 /build/monitor.log
           ccache -M "$CCACHE_MAXSIZE"; ccache -z
-          elapsed=$(( ($(date +%s) - JOB_START) / 60 ))
-          left=$(( JOB_BUDGET_MIN - elapsed ))
-          echo "Elapsed ${elapsed}m, building for at most ${left}m"
-          set +e
-          source build/envsetup.sh
-          breakfast "$DEVICE" "${{ inputs.variant }}" || exit 1
-          timeout --signal=INT --kill-after=2m "${left}m" m "${{ inputs.target }}" -j"$(nproc)" 2>&1 | tee /build/build.log
-          rc=${PIPESTATUS[0]}
-          set -e
+          # Copy so a pushed fix to this script can't change it mid-run.
+          cp "$GITHUB_WORKSPACE/manifests/ci/build.sh" /build/ci-build.sh
+          rc=0
+          VARIANT="${{ inputs.variant }}" TARGET="${{ inputs.target }}" WAIT_FOR_FIX="${{ inputs.wait_for_fix }}" \
+            MANIFESTS_DIR="$GITHUB_WORKSPACE/manifests" /build/ci-build.sh || rc=$?
           ccache -s
           df -h /build; free -h
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
@@ -156,6 +156,7 @@ jobs:
           name: build-log
           path: |
             /build/build.log
+            /build/build-attempt*.log
             /build/monitor.log
             /build/src/out/error.log
             /build/src/out/soong.log
