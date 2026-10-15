@@ -8,9 +8,6 @@
     <remove-project path="prebuilts/android-emulator" />
     <remove-project path="prebuilts/qemu-kernel" />
     <remove-project path="external/chromiumos-config" />
-    <remove-project path="kernel/prebuilts/6.1/x86_64" />
-    <remove-project path="kernel/prebuilts/6.6/x86_64" />
-    <remove-project path="kernel/prebuilts/6.12/x86_64" />
     <remove-project path="kernel/prebuilts/mainline/arm64" />
     <remove-project path="kernel/prebuilts/mainline/x86_64" />
     <remove-project path="kernel/prebuilts/common-modules/virtual-device/6.1/arm64" />

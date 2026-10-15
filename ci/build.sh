@@ -77,6 +77,13 @@ for path in $(sed -n 's/.*<remove-project path="\([^"]*\)".*/\1/p' "$MANIFESTS_D
     [ -e "$path" ] && { echo "Removing $path (dropped in ci/remove_unneeded.xml)"; rm -rf "$path"; }
 done
 
+# Projects added back to the manifest after the tree was synced are missing on disk.
+missing=$(repo list --all -p 2>/dev/null | while read -r path; do [ -e "$path" ] || echo "$path"; done)
+if [ -n "$missing" ]; then
+    echo "Syncing missing projects:" $missing
+    repo sync -c --force-sync --no-clone-bundle --no-tags $missing < /dev/null
+fi
+
 [ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
 attempt=${ATTEMPT:-1}
 while :; do
