@@ -92,6 +92,8 @@ while :; do
     echo "=== Attempt $attempt, building for at most ${left}m"
     (
         set +u  # envsetup.sh is not nounset-clean
+        # Emulator/cuttlefish host tools reference prebuilts dropped in ci/remove_unneeded.xml.
+        export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
         breakfast "$DEVICE" "$VARIANT" || exit 1
         timeout --signal=INT --kill-after=2m "${left}m" m "$TARGET" -j"$(nproc)"
