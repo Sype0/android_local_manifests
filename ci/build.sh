@@ -33,6 +33,7 @@ publish_status() {
         echo "run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         echo "attempt: $1  rc: $2  state: $3  time: $(date -u +%FT%TZ)  minutes_left: $(minutes_left)"
         df -h /build | tail -1
+        mountpoint -q /build/src/out && { df -h /build/src/out | tail -1; sudo compsize -x /build/src/out 2>/dev/null | tail -3; }
         echo "---- errors ----"
         grep -nE -A6 'error:|FAILED:|ERROR:|Error:|fatal:' /build/build.log | grep -v '^\[ *[0-9]*% ' | head -300
         echo "---- tail ----"
@@ -71,6 +72,54 @@ resync_changed() {
     done
     mv /tmp/heads.new /tmp/heads.old
 }
+
+# Delete toolchain versions the build does not use (several GB each), plus a few
+# large test-only trees. Missing test deps are tolerated via ALLOW_MISSING_DEPENDENCIES.
+prune_tree() {
+    local keep d v
+    keep=$(sed -n 's/.*ClangDefaultVersion *= *"\(clang-[^"]*\)".*/\1/p' build/soong/cc/config/global.go)
+    if [ -n "$keep" ] && [ -d "prebuilts/clang/host/linux-x86/$keep" ]; then
+        for d in prebuilts/clang/host/linux-x86/clang-r*; do
+            [ -L "$d" ] && continue
+            [ "$(basename "$d")" = "$keep" ] && continue
+            # Keep anything a symlink (clang-stable, llvm-binutils-stable, ...) points into.
+            find prebuilts/clang/host/linux-x86 -maxdepth 1 -type l -exec readlink {} \; | grep -q "$(basename "$d")" && continue
+            echo "Pruning $d (default is $keep)"; rm -rf "$d"
+        done
+    fi
+    v=$(sed -n 's/.*RustDefaultVersion *= *"\([0-9.]*\)".*/\1/p' build/soong/rust/config/global.go)
+    if [ -n "$v" ] && [ -d "prebuilts/rust/linux-x86/$v" ]; then
+        for d in prebuilts/rust/*/[0-9]*.[0-9]*; do
+            [ -L "$d" ] || [ "$(basename "$d")" = "$v" ] && continue
+            echo "Pruning $d (default is $v)"; rm -rf "$d"
+        done
+    fi
+    for d in cts; do
+        [ -e "$d" ] && { echo "Pruning $d"; rm -rf "$d"; }
+    done
+}
+
+# Put out/ on a zstd-compressed btrfs image: build output compresses 2-3x,
+# which is the only way it fits next to the source on the runner's disk.
+setup_compressed_out() {
+    mountpoint -q out && return 0
+    command -v mkfs.btrfs > /dev/null || sudo apt-get install -y -qq btrfs-progs btrfs-compsize > /dev/null || return 1
+    truncate -s 400G /build/out.img && mkfs.btrfs -q -f /build/out.img || return 1
+    [ -d out ] && mv out out.plain
+    mkdir -p out
+    if ! sudo mount -o loop,compress-force=zstd:3,noatime,discard=async /build/out.img out; then
+        rmdir out; [ -d out.plain ] && mv out.plain out; rm -f /build/out.img; return 1
+    fi
+    sudo chown "$(id -u):$(id -g)" out
+    if [ -d out.plain ]; then
+        echo "Moving existing out/ ($(du -sh out.plain | cut -f1)) onto the compressed volume"
+        cp -a out.plain/. out/ && rm -rf out.plain
+    fi
+}
+
+prune_tree
+setup_compressed_out || echo "::warning::Could not set up compressed out/, continuing without it"
+df -h /build out | tail -2
 
 # Projects dropped from the CI manifest after the tree was synced still sit on disk.
 for path in $(sed -n 's/.*<remove-project path="\([^"]*\)".*/\1/p' "$MANIFESTS_DIR/ci/remove_unneeded.xml"); do
