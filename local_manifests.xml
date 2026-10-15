@@ -18,7 +18,7 @@
     <!-- LineageOS hardware trees -->
     <project name="BaranAspect-Development/android_hardware_xiaomi" path="hardware/xiaomi" remote="gh" revision="lineage-23.0" />
     <remove-project path="hardware/qcom-caf/common" />
-    <project name="BaranAspect-Development/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common" remote="gh" revision="lineage-23.0" >
+    <project name="Sype0/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common" remote="gh" revision="lineage-23.0" >
         <!-- Same guards as LineageOS's hardware/qcom-caf/common entry; without them every CAF platform gets built -->
         <linkfile src="os_pickup_aosp.mk" dest="hardware/qcom/Android.mk" />
         <linkfile src="os_pickup_sepolicy_vndr.mk" dest="device/qcom/sepolicy_vndr/SEPolicy.mk" />
