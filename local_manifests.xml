@@ -29,9 +29,7 @@
     <project path="hardware/qcom-caf/sm6225/display" name="rn124g-development/android_hardware_qcom-caf_sm6225_display" remote="gh" revision="sixteen" />
     <project path="hardware/qcom-caf/sm6225/media" name="rn124g-development/android_hardware_qcom-caf_sm6225_media" remote="gh" revision="sixteen" />
 
-    <!-- Extra trees Micam & Dolby -->
-    <project name="AspectPower/android_vendor_xiaomi_miuicamera-topaz" path="vendor/xiaomi/miuicamera-topaz" remote="gl" revision="lineage-23.0" />
-    <project name="BaranAspect-Development/android_device_xiaomi_miuicamera-topaz" path="device/xiaomi/miuicamera-topaz" remote="gh" revision="lineage-23.0" />
+    <!-- Extra trees Dolby -->
     <project path="hardware/dolby" name="BaranAspect-Development/android_hardware_dolby" remote="gh" revision="bka" />
 
 </manifest>
