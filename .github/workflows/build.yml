@@ -46,11 +46,17 @@ jobs:
       - name: Prepare build dir and swap
         run: |
           sudo mkdir -p /build && sudo chown "$USER:$USER" /build
-          # zram first (costs no disk), small disk swap as overflow.
-          sudo modprobe zram && echo zstd | sudo tee /sys/block/zram0/comp_algorithm
-          echo 12G | sudo tee /sys/block/zram0/disksize
-          sudo mkswap /dev/zram0 && sudo swapon -p 100 /dev/zram0
-          sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile
+          # Prefer zram (costs no disk) with a small disk swap as overflow.
+          swap=12G
+          if sudo modprobe zram 2>/dev/null || { sudo apt-get install -y -qq "linux-modules-extra-$(uname -r)" && sudo modprobe zram; }; then
+            echo zstd | sudo tee /sys/block/zram0/comp_algorithm
+            echo 12G | sudo tee /sys/block/zram0/disksize
+            sudo mkswap /dev/zram0 && sudo swapon -p 100 /dev/zram0
+            swap=8G
+          else
+            echo "::warning::zram unavailable, using a ${swap} swap file only"
+          fi
+          sudo fallocate -l "$swap" /swapfile && sudo chmod 600 /swapfile
           sudo mkswap /swapfile && sudo swapon -p 10 /swapfile
           df -h; free -h; nproc
 
