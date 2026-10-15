@@ -46,9 +46,9 @@ jobs:
       - name: Merge root and /mnt into one big volume
         uses: easimon/maximize-build-space@v10
         with:
-          root-reserve-mb: 6144
+          root-reserve-mb: 10240
           temp-reserve-mb: 1024
-          swap-size-mb: 32768
+          swap-size-mb: 24576
           build-mount-path: /build
           remove-dotnet: 'true'
           remove-android: 'true'
@@ -80,6 +80,10 @@ jobs:
           git config --global color.ui false
           git lfs install
 
+      - name: Start resource monitor
+        run: |
+          nohup bash -c 'while true; do echo "== $(date -u +%T) load=$(cut -d" " -f1-3 /proc/loadavg)"; free -m | sed -n 2,3p; df -m / /build | tail -2; sleep 60; done' > /build/monitor.log 2>&1 &
+
       - name: Init and sync sources
         working-directory: /build
         run: |
@@ -88,8 +92,11 @@ jobs:
             --git-lfs --depth=1 --no-clone-bundle -g default,-mips,-darwin,-notdefault
           mkdir -p .repo/local_manifests
           cp "$GITHUB_WORKSPACE/manifests/local_manifests.xml" .repo/local_manifests/
-          repo sync -c -j16 --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune \
-            || repo sync -c -j4 --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
+          # Keep the runner agent responsive: low priority, moderate parallelism.
+          sync() { nice -n 15 ionice -c2 -n7 repo sync -c --jobs-network="$1" --jobs-checkout=2 \
+            --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune; }
+          sync 8 || sync 4 || sync 2
+          tail -3 /build/monitor.log
           df -h /build
 
       - name: Restore ccache
@@ -109,6 +116,7 @@ jobs:
           CCACHE_COMPRESS: 1
           CCACHE_COMPRESSLEVEL: 6
         run: |
+          tail -3 /build/monitor.log
           ccache -M "$CCACHE_MAXSIZE"; ccache -z
           elapsed=$(( ($(date +%s) - JOB_START) / 60 ))
           left=$(( JOB_BUDGET_MIN - elapsed ))
@@ -141,6 +149,7 @@ jobs:
           name: build-log
           path: |
             /build/build.log
+            /build/monitor.log
             /build/src/out/error.log
             /build/src/out/soong.log
           if-no-files-found: ignore
