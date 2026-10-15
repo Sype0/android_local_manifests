@@ -43,22 +43,11 @@ jobs:
           sudo swapoff -a && sudo rm -f /mnt/swapfile /swapfile || true
           df -h
 
-      - name: Merge root and /mnt into one big volume
-        uses: easimon/maximize-build-space@v10
-        with:
-          root-reserve-mb: 10240
-          temp-reserve-mb: 1024
-          swap-size-mb: 24576
-          build-mount-path: /build
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-
-      - name: Show resources
+      - name: Prepare build dir and swap
         run: |
-          sudo chown -R "$USER:$USER" /build
+          sudo mkdir -p /build && sudo chown "$USER:$USER" /build
+          sudo fallocate -l 16G /swapfile && sudo chmod 600 /swapfile
+          sudo mkswap /swapfile && sudo swapon /swapfile
           df -h; free -h; nproc
 
       - name: Checkout local manifests
@@ -92,12 +81,13 @@ jobs:
             --git-lfs --depth=1 --no-clone-bundle -g default,-mips,-darwin,-notdefault
           mkdir -p .repo/local_manifests
           cp "$GITHUB_WORKSPACE/manifests/local_manifests.xml" .repo/local_manifests/
-          # Keep the runner agent responsive: low priority, moderate parallelism.
-          sync() { nice -n 15 ionice -c2 -n7 repo sync -c --jobs-network="$1" --jobs-checkout=2 \
-            --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune; }
-          sync 8 || sync 4 || sync 2
+          cp "$GITHUB_WORKSPACE/manifests/ci/remove_unneeded.xml" .repo/local_manifests/
+          rc=0
+          "$GITHUB_WORKSPACE/manifests/ci/sync.sh" || rc=$?
+          du -sh .repo 2>/dev/null; du -sh -- */ 2>/dev/null | sort -rh | head -15
           tail -3 /build/monitor.log
           df -h /build
+          exit $rc
 
       - name: Restore ccache
         uses: actions/cache/restore@v4
