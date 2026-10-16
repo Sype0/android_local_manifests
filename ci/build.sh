@@ -127,7 +127,8 @@ prune_tree() {
     # synced back. Not cts: system modules such as aconfigd-system use it.
 }
 
-# Put out/ on a zstd-compressed btrfs image: build output compresses 2-3x,
+# Put out/ on a zstd-compressed btrfs image (level 9: the restored out/ must fit
+# next to the tree): build output compresses 2-3x,
 # which is the only way it fits next to the source on the runner's disk.
 setup_compressed_out() {
     mountpoint -q out && return 0
@@ -135,7 +136,7 @@ setup_compressed_out() {
     truncate -s 400G /build/out.img && mkfs.btrfs -q -f /build/out.img || return 1
     [ -d out ] && mv out out.plain
     mkdir -p out
-    if ! sudo mount -o loop,compress-force=zstd:3,noatime,discard=async /build/out.img out; then
+    if ! sudo mount -o loop,compress-force=zstd:9,noatime,discard=async /build/out.img out; then
         rmdir out; [ -d out.plain ] && mv out.plain out; rm -f /build/out.img; return 1
     fi
     sudo chown "$(id -u):$(id -g)" out

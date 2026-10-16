@@ -6,6 +6,12 @@
     <remove-project path="device/google/trout" />
     <remove-project path="device/generic/trusty" />
     <remove-project path="prebuilts/remoteexecution-client" />
+    <!-- Only used for ABI checks, not part of the ROM -->
+    <remove-project path="prebuilts/abi-dumps/ndk" />
+    <remove-project path="prebuilts/abi-dumps/platform" />
+    <remove-project path="prebuilts/abi-dumps/vndk" />
+    <!-- Only trusty/emulator host packages need it; tolerated by ALLOW_MISSING_DEPENDENCIES -->
+    <remove-project path="prebuilts/android-emulator" />
     <remove-project path="prebuilts/qemu-kernel" />
     <remove-project path="external/chromiumos-config" />
     <remove-project path="kernel/prebuilts/mainline/arm64" />

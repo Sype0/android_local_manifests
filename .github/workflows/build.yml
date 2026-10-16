@@ -55,12 +55,12 @@ jobs:
         run: |
           sudo mkdir -p /build && sudo chown "$USER:$USER" /build
           # Prefer zram (costs no disk) with a small disk swap as overflow.
-          swap=12G
+          swap=8G
           if sudo modprobe zram 2>/dev/null || { sudo apt-get install -y -qq "linux-modules-extra-$(uname -r)" && sudo modprobe zram; }; then
             echo zstd | sudo tee /sys/block/zram0/comp_algorithm
             echo 12G | sudo tee /sys/block/zram0/disksize
             sudo mkswap /dev/zram0 && sudo swapon -p 100 /dev/zram0
-            swap=8G
+            swap=5G
           else
             echo "::warning::zram unavailable, using a ${swap} swap file only"
           fi
