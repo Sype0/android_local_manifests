@@ -190,13 +190,7 @@ done
 if [ "$rc" != 0 ]; then
     rm -f /build/ballast
     publish_status "$attempt" "$rc" saving-state
-    if /build/ci-state.sh save; then
-        st=state-saved
-        # Only a timeout continues automatically; real errors need a fix first.
-        { [ "$rc" = 124 ] || [ "$rc" = 130 ]; } && echo "$rc" > /build/state-continue
-    else
-        st=state-save-failed
-    fi
+    if /build/ci-state.sh save; then st=state-saved; else st=state-save-failed; fi
     # Free the disk so the ccache can still be saved.
     mountpoint -q out && sudo umount out && rm -f /build/out.img
     publish_status "$attempt" "$rc" "$st"
