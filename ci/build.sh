@@ -131,7 +131,46 @@ setup_compressed_out() {
     fi
 }
 
+# LineageOS writes product/etc/build-manifest.xml with `repo manifest -r`, which
+# needs the git history ci/sync.sh strips. Answer that one call from the
+# revisions recorded during the sync; everything else goes to the real repo.
+shim_repo_manifest() {
+    local real=.repo/repo/repo.real
+    [ -e "$real" ] || mv .repo/repo/repo "$real"
+    cat > .repo/repo/repo <<'SHIM'
+#!/usr/bin/env python3
+# CI shim, see ci/build.sh: pinned manifest without git history
+import os, sys
+from xml.sax.saxutils import quoteattr
+if sys.argv[1:] == ["manifest", "-o", "-", "-r"]:
+    print('<?xml version="1.0" encoding="UTF-8"?>')
+    print("<manifest>")
+    with open("/build/revisions.txt") as f:
+        for line in sorted(f):
+            path, _, rev = line.strip().partition(" ")
+            if path and rev:
+                print(f"  <project path={quoteattr(path)} name={quoteattr(path)} revision={quoteattr(rev)} />")
+    print("</manifest>")
+    sys.exit(0)
+real = os.path.join(os.path.dirname(os.path.abspath(__file__)), "repo.real")
+os.execv(sys.executable, [sys.executable, real] + sys.argv[1:])
+SHIM
+    chmod 755 .repo/repo/repo
+}
+
+# The disk swap file is only needed for the memory-hungry analysis; zram stays.
+free_disk_swap() {
+    local avail
+    avail=$(df -BG --output=avail / | tail -1 | tr -dc 0-9)
+    if [ "${avail:-0}" -lt 6 ] && swapon --show=NAME --noheadings | grep -qx /swapfile; then
+        echo "Only ${avail}G free, dropping the disk swap file"
+        sudo swapoff /swapfile && sudo rm -f /swapfile
+    fi
+}
+
 prune_tree
+shim_repo_manifest
+free_disk_swap
 setup_compressed_out || echo "::warning::Could not set up compressed out/, continuing without it"
 # Keep room for packing out/ even when the build fills the disk.
 [ -f /build/ballast ] || fallocate -l 2500M /build/ballast
