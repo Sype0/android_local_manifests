@@ -113,9 +113,13 @@ jobs:
         id: build
         working-directory: /build/src
         env:
-          # No ccache: out/ itself is carried between runs (ci/state.sh), and
-          # the disk is needed for the build.
-          USE_CCACHE: 0
+          # Keep the ccache prefix so compile commands match the saved out/
+          # (a changed command line makes ninja rebuild), but cache nothing:
+          # out/ itself is carried between runs and the disk is needed.
+          USE_CCACHE: 1
+          CCACHE_EXEC: /usr/bin/ccache
+          CCACHE_DIR: /build/ccache
+          CCACHE_DISABLE: 1
           GH_TOKEN: ${{ github.token }}
         run: |
           tail -3 /build/monitor.log
