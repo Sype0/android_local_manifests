@@ -108,7 +108,8 @@ prune_tree() {
             echo "Pruning $d (default is $v)"; rm -rf "$d"
         done
     fi
-    for d in cts prebuilts/remoteexecution-client; do
+    # Not cts: system modules such as aconfigd-system link libraries from it
+    for d in prebuilts/remoteexecution-client; do
         [ -e "$d" ] && { echo "Pruning $d"; rm -rf "$d"; }
     done
 }
