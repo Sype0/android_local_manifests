@@ -87,9 +87,9 @@ ensure_disk_swap() {
     local avail
     swapon --show=NAME --noheadings | grep -qx /swapfile && return 0
     avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
-    [ "${avail:-0}" -ge 12288 ] || { echo "No room for the disk swap file (${avail}M free)"; return 0; }
+    [ "${avail:-0}" -ge 8192 ] || { echo "No room for the disk swap file (${avail}M free)"; return 0; }
     echo "Re-creating the disk swap file for the analysis"
-    sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile && sudo mkswap -q /swapfile && sudo swapon -p 10 /swapfile
+    sudo fallocate -l 5G /swapfile && sudo chmod 600 /swapfile && sudo mkswap -q /swapfile && sudo swapon -p 10 /swapfile
 }
 
 prune_tree() {
