@@ -5,6 +5,7 @@
     <remove-project path="device/google/cuttlefish_vmm" />
     <remove-project path="device/google/trout" />
     <remove-project path="device/generic/trusty" />
+    <remove-project path="prebuilts/remoteexecution-client" />
     <remove-project path="prebuilts/qemu-kernel" />
     <remove-project path="external/chromiumos-config" />
     <remove-project path="kernel/prebuilts/mainline/arm64" />

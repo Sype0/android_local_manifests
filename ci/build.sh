@@ -123,10 +123,8 @@ prune_tree() {
             echo "Pruning $d (default is $v)"; rm -rf "$d"
         done
     fi
-    # Not cts: system modules such as aconfigd-system link libraries from it
-    for d in prebuilts/remoteexecution-client; do
-        [ -e "$d" ] && { echo "Pruning $d"; rm -rf "$d"; }
-    done
+    # Whole projects go in ci/remove_unneeded.xml instead, so they are not
+    # synced back. Not cts: system modules such as aconfigd-system use it.
 }
 
 # Put out/ on a zstd-compressed btrfs image: build output compresses 2-3x,
