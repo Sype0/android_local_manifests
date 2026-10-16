@@ -6,7 +6,9 @@
 # VARIANT, TARGET, WAIT_FOR_FIX, MANIFESTS_DIR.
 set -u
 
-deadline=$(( JOB_START + JOB_BUDGET_MIN * 60 ))
+# Stop building early enough to save out/ for the next run (ci/state.sh).
+SAVE_MIN=${SAVE_MIN:-45}
+deadline=$(( JOB_START + (JOB_BUDGET_MIN - SAVE_MIN) * 60 ))
 minutes_left() { echo $(( (deadline - $(date +%s)) / 60 )); }
 manifest_head() { git ls-remote "https://github.com/$GITHUB_REPOSITORY" "refs/heads/$GITHUB_REF_NAME" | cut -f1; }
 
@@ -119,6 +121,13 @@ setup_compressed_out() {
 
 prune_tree
 setup_compressed_out || echo "::warning::Could not set up compressed out/, continuing without it"
+# Keep room for packing out/ even when the build fills the disk.
+[ -f /build/ballast ] || fallocate -l 2500M /build/ballast
+if [ ! -f /tmp/state-restored ]; then
+    touch /tmp/state-restored
+    cp "$MANIFESTS_DIR/ci/state.sh" /build/ci-state.sh
+    /build/ci-state.sh restore
+fi
 df -h /build out | tail -2
 
 # Projects dropped from the CI manifest after the tree was synced still sit on disk.
@@ -151,7 +160,7 @@ while :; do
     df -h /build | tail -1
     [ "$rc" = 0 ] && { publish_status "$attempt" 0 success; break; }
     if [ "$rc" = 124 ] || [ "$rc" = 130 ]; then
-        echo "::warning::Build stopped at the time budget. ccache is saved; re-run the workflow to continue."
+        echo "::warning::Build stopped at the time budget; saving out/ so the next run continues."
         break
     fi
     cp /build/build.log "/build/build-attempt$attempt.log"
@@ -166,4 +175,12 @@ while :; do
     cp "$MANIFESTS_DIR/ci/build.sh" "/build/ci-build-$attempt.sh"
     ATTEMPT=$attempt exec "/build/ci-build-$attempt.sh"
 done
+if [ "$rc" != 0 ]; then
+    rm -f /build/ballast
+    publish_status "$attempt" "$rc" saving-state
+    if /build/ci-state.sh save; then st=state-saved; else st=state-save-failed; fi
+    # Free the disk so the ccache can still be saved.
+    mountpoint -q out && sudo umount out && rm -f /build/out.img
+    publish_status "$attempt" "$rc" "$st"
+fi
 exit "$rc"

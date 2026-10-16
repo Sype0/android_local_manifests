@@ -30,6 +30,7 @@ while mapfile -t -n "$CHUNK" chunk && [ ${#chunk[@]} -gt 0 ]; do
     sync_chunk "${paths[@]}" || { df -h /build; exit 1; }
     for k in "${!paths[@]}"; do
         rel=${paths[$k]#"$PWD/"}
+        echo "$rel $(git -C "${paths[$k]}" rev-parse HEAD 2>/dev/null)" >> /build/revisions.txt
         rm -rf "${paths[$k]}/.git" ".repo/projects/$rel.git" ".repo/project-objects/${names[$k]}.git"
     done
     i=$((i + ${#chunk[@]}))
