@@ -70,6 +70,8 @@ resync_changed() {
     local changed
     changed=$(diff /tmp/heads.old /tmp/heads.new | sed -n 's/^> \([^ ]*\) .*/\1/p')
     echo "Re-syncing: ${changed:-nothing}"
+    # repo itself breaks with the build-manifest shim in place
+    [ -e .repo/repo/repo.real ] && mv -f .repo/repo/repo.real .repo/repo/repo
     for path in $changed; do
         rm -rf "$path" ".repo/projects/$path.git"
         repo sync -c --force-sync --no-clone-bundle --no-tags "$path" < /dev/null || return 1
