@@ -36,6 +36,8 @@ publish_status() {
         echo "attempt: $1  rc: $2  state: $3  time: $(date -u +%FT%TZ)  minutes_left: $(minutes_left)"
         df -h /build | tail -1
         mountpoint -q /build/src/out && { df -h /build/src/out | tail -1; sudo compsize -x /build/src/out 2>/dev/null | tail -3; }
+        echo "---- preparation ----"
+        tail -25 /build/prep.log 2>/dev/null
         echo "---- errors ----"
         grep -nE -A6 'error:|FAILED:|ERROR:|Error:|fatal:' /build/build.log | grep -v '^\[ *[0-9]*% ' | head -300
         echo "---- tail ----"
@@ -162,13 +164,16 @@ SHIM
 # The disk swap file is only needed for the memory-hungry analysis; zram stays.
 free_disk_swap() {
     local avail
-    avail=$(df -BG --output=avail / | tail -1 | tr -dc 0-9)
-    if [ "${avail:-0}" -lt 6 ] && swapon --show=NAME --noheadings | grep -qx /swapfile; then
-        echo "Only ${avail}G free, dropping the disk swap file"
+    avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
+    if [ "${avail:-0}" -lt 8192 ] && swapon --show=NAME --noheadings | grep -qx /swapfile; then
+        echo "Only ${avail}M free, dropping the disk swap file"
         sudo swapoff /swapfile && sudo rm -f /swapfile
     fi
 }
 
+exec 3>&1 4>&2
+exec > >(tee -a /build/prep.log) 2>&1
+echo "== preparation, attempt ${ATTEMPT:-1} $(date -u +%T)"
 prune_tree
 shim_repo_manifest
 free_disk_swap
@@ -193,6 +198,9 @@ if [ -n "$missing" ]; then
     echo "Syncing missing projects:" $missing
     repo sync -c --force-sync --no-clone-bundle --no-tags $missing < /dev/null
 fi
+
+echo "cts present: $([ -d cts ] && echo yes || echo no)"
+exec 1>&3 2>&4 3>&- 4>&-
 
 [ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
 attempt=${ATTEMPT:-1}
