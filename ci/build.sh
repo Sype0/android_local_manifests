@@ -108,7 +108,7 @@ prune_tree() {
             echo "Pruning $d (default is $v)"; rm -rf "$d"
         done
     fi
-    for d in cts; do
+    for d in cts prebuilts/remoteexecution-client; do
         [ -e "$d" ] && { echo "Pruning $d"; rm -rf "$d"; }
     done
 }
