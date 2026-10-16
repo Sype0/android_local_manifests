@@ -28,7 +28,6 @@ env:
   DEVICE: topaz
   # GitHub kills the job at 360 min; leave room to save ccache + upload.
   JOB_BUDGET_MIN: 335
-  CCACHE_MAXSIZE: 5G
 
 jobs:
   build:
@@ -110,26 +109,16 @@ jobs:
           df -h /build
           exit $rc
 
-      - name: Restore ccache
-        uses: actions/cache/restore@v4
-        with:
-          path: /build/ccache
-          key: ccache-${{ env.LOS_BRANCH }}-${{ env.DEVICE }}-${{ github.run_id }}
-          restore-keys: ccache-${{ env.LOS_BRANCH }}-${{ env.DEVICE }}-
-
       - name: Build
         id: build
         working-directory: /build/src
         env:
-          USE_CCACHE: 1
-          CCACHE_EXEC: /usr/bin/ccache
-          CCACHE_DIR: /build/ccache
-          CCACHE_COMPRESS: 1
-          CCACHE_COMPRESSLEVEL: 6
+          # No ccache: out/ itself is carried between runs (ci/state.sh), and
+          # the disk is needed for the build.
+          USE_CCACHE: 0
           GH_TOKEN: ${{ github.token }}
         run: |
           tail -3 /build/monitor.log
-          ccache -M "$CCACHE_MAXSIZE"; ccache -z
           # Pick up fixes pushed while syncing; copy so later pushes can't change the script mid-run.
           git -C "$GITHUB_WORKSPACE/manifests" pull -q --ff-only || true
           cp "$GITHUB_WORKSPACE/manifests/local_manifests.xml" .repo/local_manifests/
@@ -137,17 +126,9 @@ jobs:
           rc=0
           VARIANT="${{ inputs.variant }}" TARGET="${{ inputs.target }}" WAIT_FOR_FIX="${{ inputs.wait_for_fix }}" \
             MANIFESTS_DIR="$GITHUB_WORKSPACE/manifests" /build/ci-build.sh || rc=$?
-          ccache -s
           df -h /build; free -h
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
           exit "$rc"
-
-      - name: Save ccache
-        if: always() && steps.build.outcome != 'skipped'
-        uses: actions/cache/save@v4
-        with:
-          path: /build/ccache
-          key: ccache-${{ env.LOS_BRANCH }}-${{ env.DEVICE }}-${{ github.run_id }}
 
       - name: Upload build log
         if: always()
