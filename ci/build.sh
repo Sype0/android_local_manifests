@@ -79,6 +79,17 @@ resync_changed() {
 
 # Delete toolchain versions the build does not use (several GB each), plus a few
 # large test-only trees. Missing test deps are tolerated via ALLOW_MISSING_DEPENDENCIES.
+# Soong's analysis needs far more than the 16 GB of RAM; without the disk swap
+# file the runner gets killed. Put it back if it was dropped and there is room.
+ensure_disk_swap() {
+    local avail
+    swapon --show=NAME --noheadings | grep -qx /swapfile && return 0
+    avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
+    [ "${avail:-0}" -ge 12288 ] || { echo "No room for the disk swap file (${avail}M free)"; return 0; }
+    echo "Re-creating the disk swap file for the analysis"
+    sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile && sudo mkswap -q /swapfile && sudo swapon -p 10 /swapfile
+}
+
 prune_tree() {
     local keep d v clang=prebuilts/clang/host/linux-x86
     # Default clang plus any other version the build system pins (e.g. bindgen's).
@@ -178,7 +189,6 @@ echo "== preparation, attempt ${ATTEMPT:-1} $(date -u +%T)"
 # launcher), the shim only for the build itself
 [ -e .repo/repo/repo.real ] && mv -f .repo/repo/repo.real .repo/repo/repo
 prune_tree
-free_disk_swap
 setup_compressed_out || echo "::warning::Could not set up compressed out/, continuing without it"
 # Keep room for packing out/ even when the build fills the disk.
 [ -f /build/ballast ] || fallocate -l 2500M /build/ballast
@@ -217,7 +227,12 @@ while :; do
         export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
         breakfast "$DEVICE" "$VARIANT" || exit 1
-        timeout --signal=INT --kill-after=2m "${left}m" m "$TARGET" -j"$(nproc)"
+        # Analysis (Soong/Kati) first, while the disk swap file is there; the
+        # build after it needs the disk space more than the swap
+        ensure_disk_swap
+        timeout --signal=INT --kill-after=2m "${left}m" m --skip-ninja "$TARGET" || exit $?
+        free_disk_swap
+        timeout --signal=INT --kill-after=2m "$(minutes_left)m" m "$TARGET" -j"$(nproc)"
     ) 2>&1 | tee /build/build.log
     rc=${PIPESTATUS[0]}
     df -h /build | tail -1
