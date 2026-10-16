@@ -13,7 +13,7 @@
 
     <!-- LineageOS Xiaomi SEPolicy Trees -->
     <project name="rn124g-development/android_device_qcom_sepolicy_vndr_sm6225" path="device/qcom/sepolicy_vndr/sm6225" remote="gh" revision="sixteen" />
-    <project name="BaranAspect-Development/android_device_xiaomi_sepolicy" path="device/xiaomi/sepolicy" remote="gh" revision="lineage-23.0" />
+    <project name="Sype0/android_device_xiaomi_sepolicy" path="device/xiaomi/sepolicy" remote="gh" revision="lineage-23.0" />
 
     <!-- LineageOS hardware trees -->
     <project name="BaranAspect-Development/android_hardware_xiaomi" path="hardware/xiaomi" remote="gh" revision="lineage-23.0" />
