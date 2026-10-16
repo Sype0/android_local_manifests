@@ -78,15 +78,25 @@ resync_changed() {
 # Delete toolchain versions the build does not use (several GB each), plus a few
 # large test-only trees. Missing test deps are tolerated via ALLOW_MISSING_DEPENDENCIES.
 prune_tree() {
-    local keep d v
-    keep=$(sed -n 's/.*ClangDefaultVersion *= *"\(clang-[^"]*\)".*/\1/p' build/soong/cc/config/global.go)
-    if [ -n "$keep" ] && [ -d "prebuilts/clang/host/linux-x86/$keep" ]; then
-        for d in prebuilts/clang/host/linux-x86/clang-r*; do
+    local keep d v clang=prebuilts/clang/host/linux-x86
+    # Default clang plus any other version the build system pins (e.g. bindgen's).
+    keep=$( { sed -n 's/.*ClangDefaultVersion *= *"\(clang-[^"]*\)".*/\1/p' build/soong/cc/config/global.go
+              grep -rhoE '"clang-r[0-9]+[a-z]?"' build/soong/rust/config build/soong/rust/bindgen.go | tr -d '"'; } | sort -u)
+    for v in $keep; do
+        if [ ! -d "$clang/$v" ]; then
+            echo "$clang/$v is missing (pruned earlier?), re-syncing $clang"
+            rm -rf "$clang" ".repo/projects/$clang.git"
+            repo sync -c --force-sync --no-clone-bundle --no-tags "$clang" < /dev/null
+            break
+        fi
+    done
+    if [ -n "$keep" ]; then
+        for d in "$clang"/clang-r*; do
             [ -L "$d" ] && continue
-            [ "$(basename "$d")" = "$keep" ] && continue
+            grep -qx "$(basename "$d")" <<< "$keep" && continue
             # Keep anything a symlink (clang-stable, llvm-binutils-stable, ...) points into.
-            find prebuilts/clang/host/linux-x86 -maxdepth 1 -type l -exec readlink {} \; | grep -q "$(basename "$d")" && continue
-            echo "Pruning $d (default is $keep)"; rm -rf "$d"
+            find "$clang" -maxdepth 1 -type l -exec readlink {} \; | grep -q "$(basename "$d")" && continue
+            echo "Pruning $d (keeping:" $keep")"; rm -rf "$d"
         done
     fi
     v=$(sed -n 's/.*RustDefaultVersion *= *"\([0-9.]*\)".*/\1/p' build/soong/rust/config/global.go)
