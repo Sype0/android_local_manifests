@@ -87,6 +87,8 @@ prune_tree() {
             echo "$clang/$v is missing (pruned earlier?), re-syncing $clang"
             rm -rf "$clang" ".repo/projects/$clang.git"
             repo sync -c --force-sync --no-clone-bundle --no-tags "$clang" < /dev/null
+            # Fresh mtimes on the compiler would make every C/C++ output stale.
+            find "$clang" -exec touch -h -d @1577836800 {} +
             break
         fi
     done
