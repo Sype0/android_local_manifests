@@ -15,9 +15,13 @@ on:
         description: On failure, keep the tree and wait for a pushed fix instead of exiting
         type: boolean
         default: true
+      auto_continue:
+        description: Runs left to start automatically when the time budget ends with out/ saved
+        default: '6'
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: build-${{ github.ref }}
@@ -175,3 +179,17 @@ jobs:
           tag="${DEVICE}-$(date +%Y%m%d)-${{ github.run_number }}"
           gh release create "$tag" "${files[@]}" -R "$GITHUB_REPOSITORY" \
             --title "LineageOS 23.0 $DEVICE $(date +%Y-%m-%d)" --notes "Built by run ${{ github.run_id }} (no MIUI Camera)."
+
+      - name: Continue in a new run
+        if: always() && steps.build.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LEFT: ${{ inputs.auto_continue }}
+        run: |
+          [ -f /build/state-continue ] || { echo "Build did not stop at the time budget with out/ saved; not continuing."; exit 0; }
+          [ "${LEFT:-0}" -gt 0 ] || { echo "auto_continue exhausted."; exit 0; }
+          # Queued behind this run by the concurrency group.
+          gh workflow run build.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" \
+            -f variant="${{ inputs.variant }}" -f target="${{ inputs.target }}" \
+            -f wait_for_fix="${{ inputs.wait_for_fix }}" -f auto_continue="$((LEFT - 1))"
+          echo "Started the next run ($((LEFT - 1)) automatic continuations left after it)."
