@@ -174,8 +174,10 @@ free_disk_swap() {
 exec 3>&1 4>&2
 exec > >(tee -a /build/prep.log) 2>&1
 echo "== preparation, attempt ${ATTEMPT:-1} $(date -u +%T)"
+# The real repo is needed while preparing (repo list/sync read their own
+# launcher), the shim only for the build itself
+[ -e .repo/repo/repo.real ] && mv -f .repo/repo/repo.real .repo/repo/repo
 prune_tree
-shim_repo_manifest
 free_disk_swap
 setup_compressed_out || echo "::warning::Could not set up compressed out/, continuing without it"
 # Keep room for packing out/ even when the build fills the disk.
@@ -193,13 +195,14 @@ for path in $(sed -n 's/.*<remove-project path="\([^"]*\)".*/\1/p' "$MANIFESTS_D
 done
 
 # Projects added back to the manifest after the tree was synced are missing on disk.
-missing=$(repo list --all -p 2>/dev/null | while read -r path; do [ -e "$path" ] || echo "$path"; done)
+missing=$(repo list --all -p | while read -r path; do [ -e "$path" ] || echo "$path"; done)
 if [ -n "$missing" ]; then
     echo "Syncing missing projects:" $missing
     repo sync -c --force-sync --no-clone-bundle --no-tags $missing < /dev/null
 fi
 
 echo "cts present: $([ -d cts ] && echo yes || echo no)"
+shim_repo_manifest
 exec 1>&3 2>&4 3>&- 4>&-
 
 [ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
