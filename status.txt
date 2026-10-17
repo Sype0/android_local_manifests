@@ -1,0 +1,127 @@
+run: https://github.com/Sype0/android_local_manifests/actions/runs/39050883185
+attempt: 2  rc: 0  state: success  time: 2026-10-17T21:22:54Z  minutes_left: 13
+/dev/root       145G  135G  9.7G  94% /
+/dev/loop0      400G   43G  355G  11% /build/src/out
+---- preparation ----
+Normalizing source mtimes
+Projects changed since the saved state:
+Restoring out/
+62G	out
+/dev/root       145G  120G   25G  83% /
+/dev/loop0      400G   27G  373G   7% /build/src/out
+cts present: yes
+== preparation, attempt 2 18:19:42
+/dev/root       145G  116G   29G  81% /
+/dev/loop0      400G   27G  373G   7% /build/src/out
+Syncing missing projects: hardware/qcom-caf/sdm660/audio hardware/qcom-caf/sdm660/display hardware/qcom-caf/sdm660/media hardware/qcom-caf/sdm845/audio hardware/qcom-caf/sdm845/display hardware/qcom-caf/sdm845/media hardware/qcom-caf/sm8150/audio hardware/qcom-caf/sm8150/display hardware/qcom-caf/sm8150/media hardware/qcom-caf/sm8250/audio hardware/qcom-caf/sm8250/display hardware/qcom-caf/sm8250/media hardware/qcom-caf/sm8350/audio hardware/qcom-caf/sm8350/display hardware/qcom-caf/sm8450/audio/agm hardware/qcom-caf/sm8450/audio/graphservices hardware/qcom-caf/sm8450/audio/pal hardware/qcom-caf/sm8450/audio/primary-hal hardware/qcom-caf/sm8450/data-ipa-cfg-mgr hardware/qcom-caf/sm8450/display hardware/qcom-caf/sm8550/audio/agm hardware/qcom-caf/sm8550/audio/graphservices hardware/qcom-caf/sm8550/audio/pal hardware/qcom-caf/sm8550/audio/primary-hal hardware/qcom-caf/sm8550/data-ipa-cfg-mgr hardware/qcom-caf/sm8550/dataipa hardware/qcom-caf/sm8550/display hardware/qcom-caf/sm8650/audio/agm hardware/qcom-caf/sm8650/audio/graphservices hardware/qcom-caf/sm8650/audio/pal hardware/qcom-caf/sm8650/audio/primary-hal hardware/qcom-caf/sm8650/data-ipa-cfg-mgr hardware/qcom-caf/sm8650/dataipa hardware/qcom-caf/sm8650/display hardware/qcom-caf/sm8750/audio/agm hardware/qcom-caf/sm8750/audio/graphservices hardware/qcom-caf/sm8750/audio/pal hardware/qcom-caf/sm8750/audio/primary-hal hardware/qcom-caf/sm8750/data-ipa-cfg-mgr hardware/qcom-caf/sm8750/dataipa hardware/qcom-caf/sm8750/display/core hardware/qcom-caf/sm8750/display/hal hardware/qcom-caf/sm8750/display/intf
+hardware/qcom-caf/sdm660/audio: Shared project LineageOS/android_hardware_qcom_audio found, disabling pruning.
+hardware/qcom-caf/sdm660/display: Shared project LineageOS/android_hardware_qcom_display found, disabling pruning.
+hardware/qcom-caf/sdm660/media: Shared project LineageOS/android_hardware_qcom_media found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/agm: Shared project LineageOS/android_vendor_qcom_opensource_agm found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/graphservices: Shared project LineageOS/android_vendor_qcom_opensource_audioreach-graphservices found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/pal: Shared project LineageOS/android_vendor_qcom_opensource_arpal-lx found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/primary-hal: Shared project LineageOS/android_hardware_qcom_audio-ar found, disabling pruning.
+hardware/qcom-caf/sm8450/data-ipa-cfg-mgr: Shared project LineageOS/android_vendor_qcom_opensource_data-ipa-cfg-mgr found, disabling pruning.
+hardware/qcom-caf/sm8550/dataipa: Shared project LineageOS/android_vendor_qcom_opensource_dataipa found, disabling pruning.
+hardware/qcom-caf/sm8750/display/core: Shared project LineageOS/android_vendor_qcom_opensource_display-core found, disabling pruning.
+hardware/qcom-caf/sm8750/display/intf: Shared project LineageOS/android_vendor_qcom_opensource_display-intf found, disabling pruning.
+Finalizing sync state...
+repo sync has finished successfully.
+cts present: yes
+---- errors ----
+26972:  915 |         test_syntax_error (_("syntax error: `%s' unexpected"), argv[pos]);
+26973-      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+26974-external/bash/bashintl.h:36:18: note: expanded from macro '_'
+26975-   36 | #define _(msgid)        gettext(msgid)
+26976-      |                         ^~~~~~~~~~~~~~
+26977-external/bash/include/gettext.h:46:25: note: expanded from macro 'gettext'
+26978-   46 | # define gettext(Msgid) ((const char *) (Msgid))
+--
+27250: 6261 |           msg = EOF_Reached ? _("syntax error: unexpected end of file") : _("syntax error");
+27251-      |               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+27252-/usr/local/src/chet/src/bash/src/parse.y:6385:10: warning: using the result of an assignment as a condition without parentheses [-Wparentheses]
+27253- 6385 |   if (ea = expanding_alias ())
+27254-      |       ~~~^~~~~~~~~~~~~~~~~~~~
+27255-/usr/local/src/chet/src/bash/src/parse.y:6385:10: note: place parentheses around the assignment to silence this warning
+27256- 6385 |   if (ea = expanding_alias ())
+---- tail ----
+frameworks/base/core/java/android/content/Intent.java:1971: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/ExtensionKey.java:24: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/PublicKey.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/params/StreamConfigurationMap.java:1363: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/os/BatteryManager.java:172: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/com/android/internal/util/DataClass.java:74: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/telephony/java/android/telephony/TelephonyManager.java:4310: warning: Method 'getUiccCardsInfo' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/libs/modules-utils/java/android/annotation/Hide.java:32: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/MultiUserDeviceProvisioningParamsTransport.java:18: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/PolicyValueTransport.java:14: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/companion/datatransfer/continuity/IUniversalClipboardManager.java:12: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/d9eb579b195ee23adb2deb9184b35849644d16d0/./out/api_lint_baseline.txt
+[ 99% 43428/43432] //frameworks/base/api:module-lib-api-stubs-docs-non-updatable check current API
+[ 99% 43429/43432] //frameworks/base/api:system-api-stubs-docs-non-updatable metalava merged
+frameworks/base/core/java/android/accounts/AccountManager.java:581: warning: Method 'getPassword' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:611: warning: Method 'getUserData' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:802: warning: Method 'getAccountsByType' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1010: warning: Method 'addAccountExplicitly' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1223: warning: Method 'renameAccount' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1294: warning: Method 'removeAccount' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1416: warning: Method 'removeAccountExplicitly' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1441: warning: Method 'invalidateAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1473: warning: Method 'peekAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1503: warning: Method 'setPassword' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1531: warning: Method 'clearPassword' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1558: warning: Method 'setUserData' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1587: warning: Method 'setAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1621: warning: Method 'blockingGetAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1696: warning: Method 'getAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1865: warning: Method 'getAuthToken' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:1937: warning: Method 'addAccount' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:2109: warning: Method 'confirmCredentials' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:2188: warning: Method 'updateCredentials' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:2244: warning: Method 'editProperties' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/accounts/AccountManager.java:2810: warning: Method 'getAuthTokenByFeatures' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/adb/ADBRootService.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/ActivityManager.java:4291: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/AppOpsManager.java:1947: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:162: warning: Method 'registerRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:187: warning: Method 'unregisterRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:209: warning: Method 'requestHandoff' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/content/BroadcastReceiver.java:684: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/content/Intent.java:1971: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/ExtensionKey.java:24: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/PublicKey.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/params/StreamConfigurationMap.java:1363: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/os/BatteryManager.java:172: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/com/android/internal/util/DataClass.java:74: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/media/java/android/media/audiopolicy/AudioMix.java:582: warning: android.media.audiopolicy.AudioMix does not declare a `isInjectSilenceOnStarvation()` method matching method android.media.audiopolicy.AudioMix.Builder.setInjectSilenceOnStarvation(boolean) (ErrorWhenNew) [MissingGetterMatchingBuilder]
+frameworks/base/telephony/java/android/telephony/TelephonyManager.java:4310: warning: Method 'getUiccCardsInfo' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/libs/modules-utils/java/android/annotation/Hide.java:32: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/MultiUserDeviceProvisioningParamsTransport.java:18: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/PolicyValueTransport.java:14: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/companion/datatransfer/continuity/IUniversalClipboardManager.java:12: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/1073a982314abb75e649a17771da5e1ec82dbc89/./out/api_lint_baseline.txt
+[ 99% 43430/43432] //frameworks/base/api:system-api-stubs-docs-non-updatable check current API
+[ 99% 43431/43432] //frameworks/base/api:test-api-stubs-docs-non-updatable metalava merged
+frameworks/base/core/java/android/adb/ADBRootService.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/ActivityManager.java:4291: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/AppOpsManager.java:1947: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:162: warning: Method 'registerRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:187: warning: Method 'unregisterRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:209: warning: Method 'requestHandoff' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-documentation (ErrorWhenNew) [RequiresPermission]
+frameworks/base/core/java/android/content/BroadcastReceiver.java:684: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/content/Intent.java:1971: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/ExtensionKey.java:24: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/PublicKey.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/params/StreamConfigurationMap.java:1363: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/os/BatteryManager.java:172: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/widget/TextView.java:13790: warning: Method taking UserHandle should be named `doFooAsUser` or `queryFooForUser`, was `setEnforceImePolicyUser` (ErrorWhenNew) [UserHandleName]
+frameworks/base/core/java/com/android/internal/util/DataClass.java:74: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/libs/modules-utils/java/android/annotation/Hide.java:32: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/MultiUserDeviceProvisioningParamsTransport.java:18: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/PolicyValueTransport.java:14: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/companion/datatransfer/continuity/IUniversalClipboardManager.java:12: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/256b1fb53f335374d973369fc30e65ea1884a4b2/./out/api_lint_baseline.txt
+[100% 43432/43432] //frameworks/base/api:test-api-stubs-docs-non-updatable check current API
+
+#### build completed successfully (03:00:59 (hh:mm:ss)) ####
+
