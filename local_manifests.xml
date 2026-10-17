@@ -26,6 +26,8 @@
         <linkfile src="os_pickup.bp" dest="hardware/qcom-caf/msm8998/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sdm660/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sdm845/Android.bp" />
+        <!-- Not in LineageOS: makes hardware/qcom-caf/sm6225 the QCOM_SOONG_NAMESPACE that bengal_515 selects -->
+        <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm6225/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8150/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8250/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8350/Android.bp" />
