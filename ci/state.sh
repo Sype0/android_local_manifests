@@ -1,13 +1,14 @@
 #!/bin/bash
 # Carry out/ between workflow runs as zstd-compressed tar chunks attached to the
-# "ci-out-state" release, so a build that runs out of job time continues next run.
+# "ci-out-state-<version>" release, so a build that runs out of job time continues next run.
 #   state.sh restore   download and unpack a saved out/, normalize source mtimes
 #   state.sh save      pack out/ and replace the saved state
 # Run from the top of the source tree. /build/revisions.txt ("<path> <sha>") is
 # written by ci/sync.sh.
 set -uo pipefail
 
-TAG=ci-out-state
+# One state per LineageOS branch: out/ from another branch is useless
+TAG=ci-out-state${LOS_BRANCH#lineage}
 REPO=$GITHUB_REPOSITORY
 EPOCH=1577836800   # 2020-01-01: older than every restored output
 CHUNK=1900M        # release assets must be < 2 GiB
@@ -51,8 +52,8 @@ save() {
     for a in $(assets); do gh release delete-asset "$TAG" "$a" -R "$REPO" -y; done
 
     echo "Saving out/ ($(du -sh out | cut -f1))"
-    tar -C out -cf - . | zstd -T0 -3 -q | split -b "$CHUNK" -d -a 3 \
-        --filter='f=/build/$FILE; cat > "$f" && gh release upload ci-out-state "$f" -R "$GITHUB_REPOSITORY" --clobber && rm -f "$f"' \
+    tar -C out -cf - . | zstd -T0 -3 -q | TAG=$TAG split -b "$CHUNK" -d -a 3 \
+        --filter='f=/build/$FILE; cat > "$f" && gh release upload "$TAG" "$f" -R "$GITHUB_REPOSITORY" --clobber && rm -f "$f"' \
         - out.tar.zst. || return 1
     # Uploaded last: restore() treats a state without revisions.txt as absent.
     mkdir -p /build/revup && cp "$revs" /build/revup/revisions.txt

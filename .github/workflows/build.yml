@@ -1,4 +1,4 @@
-name: Build LineageOS 23.0 (topaz)
+name: Build LineageOS 23.2 (topaz)
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  LOS_BRANCH: lineage-23.0
+  LOS_BRANCH: lineage-23.2
   DEVICE: topaz
   # GitHub kills the job at 360 min; leave room to save ccache + upload.
   JOB_BUDGET_MIN: 335
@@ -168,4 +168,4 @@ jobs:
           for img in boot.img vendor_boot.img dtbo.img recovery.img; do [ -f "$img" ] && files+=("$img"); done
           tag="${DEVICE}-$(date +%Y%m%d)-${{ github.run_number }}"
           gh release create "$tag" "${files[@]}" -R "$GITHUB_REPOSITORY" \
-            --title "LineageOS 23.0 $DEVICE $(date +%Y-%m-%d)" --notes "Built by run ${{ github.run_id }} (no MIUI Camera)."
+            --title "LineageOS 23.2 $DEVICE $(date +%Y-%m-%d)" --notes "Built by run ${{ github.run_id }} (no MIUI Camera)."

@@ -7,18 +7,18 @@
     <!-- - Initial A16 Local Manifest - @BaranAspect -->
 
     <!-- Main Trees From BaranAspect -->
-    <project name="Sype0/android_device_xiaomi_topaz" path="device/xiaomi/topaz" remote="gh" revision="lineage-23.0" />
+    <project name="Sype0/android_device_xiaomi_topaz" path="device/xiaomi/topaz" remote="gh" revision="lineage-23.2" />
     <project name="BaranAspect-Development/android_vendor_xiaomi_topaz" path="vendor/xiaomi/topaz" remote="gh" revision="lineage-23.0" />
     <project name="BaranAspect-Development/android_kernel_xiaomi_topaz" path="device/xiaomi/topaz-kernel" remote="gh" revision="lineage-23.0" />
 
     <!-- LineageOS Xiaomi SEPolicy Trees -->
     <project name="rn124g-development/android_device_qcom_sepolicy_vndr_sm6225" path="device/qcom/sepolicy_vndr/sm6225" remote="gh" revision="sixteen" />
-    <project name="Sype0/android_device_xiaomi_sepolicy" path="device/xiaomi/sepolicy" remote="gh" revision="lineage-23.0" />
+    <project name="Sype0/android_device_xiaomi_sepolicy" path="device/xiaomi/sepolicy" remote="gh" revision="lineage-23.2" />
 
     <!-- LineageOS hardware trees -->
     <project name="BaranAspect-Development/android_hardware_xiaomi" path="hardware/xiaomi" remote="gh" revision="lineage-23.0" />
     <remove-project path="hardware/qcom-caf/common" />
-    <project name="Sype0/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common" remote="gh" revision="lineage-23.0" >
+    <project name="Sype0/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common" remote="gh" revision="lineage-23.2" >
         <!-- Same guards as LineageOS's hardware/qcom-caf/common entry; without them every CAF platform gets built -->
         <linkfile src="os_pickup_aosp.mk" dest="hardware/qcom/Android.mk" />
         <linkfile src="os_pickup_sepolicy_vndr.mk" dest="device/qcom/sepolicy_vndr/SEPolicy.mk" />
@@ -30,6 +30,7 @@
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8250/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8350/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450/Android.bp" />
+        <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450-6.6/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8550/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8650/Android.bp" />
         <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8750/Android.bp" />
