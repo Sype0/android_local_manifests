@@ -1,0 +1,89 @@
+run: https://github.com/Sype0/android_local_manifests/actions/runs/39050883185  2026-10-17T21:23:29Z
+               total        used        free      shared  buff/cache   available
+Mem:           15989        1241        5177          25        9942       14748
+Swap:          12287         166       12121
+NAME       TYPE      SIZE   USED PRIO
+/dev/zram0 partition  12G 166.5M  100
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       145G  135G  9.7G  94% /
+/dev/loop0      400G   43G  355G  11% /build/src/out
+---- monitor ----
+/dev/root         147719 137746      9957  94% /
+/dev/root         147719 137746      9957  94% /
+== 21:22:13 load=2.20 6.39 9.54
+Mem:           15989        7228        2415          13        6705        8761
+Swap:          12287        7107        5180
+/dev/root         147719 137800      9904  94% /
+/dev/root         147719 137800      9904  94% /
+== 21:23:13 load=1.25 5.39 9.00
+Mem:           15989        1368        5050          25        9941       14621
+Swap:          12287         166       12121
+/dev/root         147719 137801      9903  94% /
+/dev/root         147719 137801      9903  94% /
+---- preparation ----
+Normalizing source mtimes
+Projects changed since the saved state:
+Restoring out/
+62G	out
+/dev/root       145G  120G   25G  83% /
+/dev/loop0      400G   27G  373G   7% /build/src/out
+cts present: yes
+== preparation, attempt 2 18:19:42
+/dev/root       145G  116G   29G  81% /
+/dev/loop0      400G   27G  373G   7% /build/src/out
+Syncing missing projects: hardware/qcom-caf/sdm660/audio hardware/qcom-caf/sdm660/display hardware/qcom-caf/sdm660/media hardware/qcom-caf/sdm845/audio hardware/qcom-caf/sdm845/display hardware/qcom-caf/sdm845/media hardware/qcom-caf/sm8150/audio hardware/qcom-caf/sm8150/display hardware/qcom-caf/sm8150/media hardware/qcom-caf/sm8250/audio hardware/qcom-caf/sm8250/display hardware/qcom-caf/sm8250/media hardware/qcom-caf/sm8350/audio hardware/qcom-caf/sm8350/display hardware/qcom-caf/sm8450/audio/agm hardware/qcom-caf/sm8450/audio/graphservices hardware/qcom-caf/sm8450/audio/pal hardware/qcom-caf/sm8450/audio/primary-hal hardware/qcom-caf/sm8450/data-ipa-cfg-mgr hardware/qcom-caf/sm8450/display hardware/qcom-caf/sm8550/audio/agm hardware/qcom-caf/sm8550/audio/graphservices hardware/qcom-caf/sm8550/audio/pal hardware/qcom-caf/sm8550/audio/primary-hal hardware/qcom-caf/sm8550/data-ipa-cfg-mgr hardware/qcom-caf/sm8550/dataipa hardware/qcom-caf/sm8550/display hardware/qcom-caf/sm8650/audio/agm hardware/qcom-caf/sm8650/audio/graphservices hardware/qcom-caf/sm8650/audio/pal hardware/qcom-caf/sm8650/audio/primary-hal hardware/qcom-caf/sm8650/data-ipa-cfg-mgr hardware/qcom-caf/sm8650/dataipa hardware/qcom-caf/sm8650/display hardware/qcom-caf/sm8750/audio/agm hardware/qcom-caf/sm8750/audio/graphservices hardware/qcom-caf/sm8750/audio/pal hardware/qcom-caf/sm8750/audio/primary-hal hardware/qcom-caf/sm8750/data-ipa-cfg-mgr hardware/qcom-caf/sm8750/dataipa hardware/qcom-caf/sm8750/display/core hardware/qcom-caf/sm8750/display/hal hardware/qcom-caf/sm8750/display/intf
+hardware/qcom-caf/sdm660/audio: Shared project LineageOS/android_hardware_qcom_audio found, disabling pruning.
+hardware/qcom-caf/sdm660/display: Shared project LineageOS/android_hardware_qcom_display found, disabling pruning.
+hardware/qcom-caf/sdm660/media: Shared project LineageOS/android_hardware_qcom_media found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/agm: Shared project LineageOS/android_vendor_qcom_opensource_agm found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/graphservices: Shared project LineageOS/android_vendor_qcom_opensource_audioreach-graphservices found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/pal: Shared project LineageOS/android_vendor_qcom_opensource_arpal-lx found, disabling pruning.
+hardware/qcom-caf/sm8450/audio/primary-hal: Shared project LineageOS/android_hardware_qcom_audio-ar found, disabling pruning.
+hardware/qcom-caf/sm8450/data-ipa-cfg-mgr: Shared project LineageOS/android_vendor_qcom_opensource_data-ipa-cfg-mgr found, disabling pruning.
+hardware/qcom-caf/sm8550/dataipa: Shared project LineageOS/android_vendor_qcom_opensource_dataipa found, disabling pruning.
+hardware/qcom-caf/sm8750/display/core: Shared project LineageOS/android_vendor_qcom_opensource_display-core found, disabling pruning.
+hardware/qcom-caf/sm8750/display/intf: Shared project LineageOS/android_vendor_qcom_opensource_display-intf found, disabling pruning.
+Finalizing sync state...
+repo sync has finished successfully.
+cts present: yes
+---- build ----
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:209: warning: Method 'requestHandoff' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to 
+frameworks/base/core/java/android/content/BroadcastReceiver.java:684: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/content/Intent.java:1971: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/ExtensionKey.java:24: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/PublicKey.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/params/StreamConfigurationMap.java:1363: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/os/BatteryManager.java:172: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/com/android/internal/util/DataClass.java:74: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/media/java/android/media/audiopolicy/AudioMix.java:582: warning: android.media.audiopolicy.AudioMix does not declare a `isInjectSilenceOnStarvation()` method matching method android.media.audiopolicy.AudioMix.Builder.setInjectSilenceOnStarvation(boolean) (ErrorWhenNew) [MissingGetter
+frameworks/base/telephony/java/android/telephony/TelephonyManager.java:4310: warning: Method 'getUiccCardsInfo' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to suppress the auto-doc
+frameworks/libs/modules-utils/java/android/annotation/Hide.java:32: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/MultiUserDeviceProvisioningParamsTransport.java:18: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/PolicyValueTransport.java:14: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/companion/datatransfer/continuity/IUniversalClipboardManager.java:12: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/1073a982314abb75e649a17771da5e1ec82dbc89/./out/api_lint_baseline.txt
+[ 99% 43430/43432] //frameworks/base/api:system-api-stubs-docs-non-updatable check current API
+[ 99% 43431/43432] //frameworks/base/api:test-api-stubs-docs-non-updatable metalava merged
+frameworks/base/core/java/android/adb/ADBRootService.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/ActivityManager.java:4291: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/app/AppOpsManager.java:1947: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:162: warning: Method 'registerRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditio
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:187: warning: Method 'unregisterRemoteTaskListener' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use condit
+frameworks/base/core/java/android/companion/datatransfer/continuity/TaskContinuityManager.java:209: warning: Method 'requestHandoff' documentation duplicates auto-generated documentation by @RequiresPermission. If the permissions are only required under certain circumstances use conditional=true to 
+frameworks/base/core/java/android/content/BroadcastReceiver.java:684: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/content/Intent.java:1971: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/ExtensionKey.java:24: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/impl/PublicKey.java:26: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/hardware/camera2/params/StreamConfigurationMap.java:1363: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/os/BatteryManager.java:172: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/base/core/java/android/widget/TextView.java:13790: warning: Method taking UserHandle should be named `doFooAsUser` or `queryFooForUser`, was `setEnforceImePolicyUser` (ErrorWhenNew) [UserHandleName]
+frameworks/base/core/java/com/android/internal/util/DataClass.java:74: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+frameworks/libs/modules-utils/java/android/annotation/Hide.java:32: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/MultiUserDeviceProvisioningParamsTransport.java:18: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/app/admin/PolicyValueTransport.java:14: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+out/srcjars/android/companion/datatransfer/continuity/IUniversalClipboardManager.java:12: warning: Invalid @hide syntax, must be a block tag (ErrorWhenNew) [InvalidJavadoc]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/256b1fb53f335374d973369fc30e65ea1884a4b2/./out/api_lint_baseline.txt
+[100% 43432/43432] //frameworks/base/api:test-api-stubs-docs-non-updatable check current API
+
+#### build completed successfully (03:00:59 (hh:mm:ss)) ####
+
