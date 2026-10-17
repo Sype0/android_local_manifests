@@ -242,7 +242,21 @@ while :; do
         ensure_disk_swap
         timeout --signal=INT --kill-after=2m "${left}m" m --skip-ninja "$TARGET" || exit $?
         free_disk_swap
+        # A full disk kills the runner before out/ can be saved: stop the build
+        # first, the interrupt is then saved like a timeout
+        ( while sleep 20; do
+            a=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
+            if [ "${a:-0}" -lt 2048 ]; then
+                echo "Only ${a}M left on the disk, stopping the build to save out/"
+                pkill -INT -f soong_ui
+                break
+            fi
+        done ) &
+        guard=$!
         timeout --signal=INT --kill-after=2m "$(minutes_left)m" m "$TARGET" -j"$(nproc)"
+        rc=$?
+        kill "$guard" 2>/dev/null
+        exit $rc
     ) 2>&1 | tee /build/build.log
     rc=${PIPESTATUS[0]}
     df -h /build | tail -1
