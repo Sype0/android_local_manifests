@@ -26,6 +26,16 @@ PY
     done
 }
 
+# "<path> <hash of the project's manifest entry>": catches linkfile/copyfile
+# edits that leave the revision alone
+project_entries() {
+    python3 - "$MANIFESTS_DIR/local_manifests.xml" <<'PY'
+import hashlib, sys, xml.etree.ElementTree as ET
+for p in ET.parse(sys.argv[1]).getroot().iter("project"):
+    print(p.get("path"), hashlib.sha1(ET.tostring(p)).hexdigest())
+PY
+}
+
 # Publish the failure to the ci-status branch so it can be read while the job waits.
 publish_status() {
     local dir=/tmp/ci-status
@@ -68,7 +78,9 @@ resync_changed() {
     cp "$MANIFESTS_DIR/local_manifests.xml" "$MANIFESTS_DIR/ci/remove_unneeded.xml" .repo/local_manifests/
     project_heads > /tmp/heads.new
     local changed
-    changed=$(diff /tmp/heads.old /tmp/heads.new | sed -n 's/^> \([^ ]*\) .*/\1/p')
+    project_entries > /tmp/entries.new
+    changed=$( { diff /tmp/heads.old /tmp/heads.new; diff /tmp/entries.old /tmp/entries.new; } |
+        sed -n 's/^> \([^ ]*\) .*/\1/p' | sort -u)
     echo "Re-syncing: ${changed:-nothing}"
     # repo itself breaks with the build-manifest shim in place
     [ -e .repo/repo/repo.real ] && mv -f .repo/repo/repo.real .repo/repo/repo
@@ -77,6 +89,7 @@ resync_changed() {
         repo sync -c --force-sync --no-clone-bundle --no-tags "$path" < /dev/null || return 1
     done
     mv /tmp/heads.new /tmp/heads.old
+    mv /tmp/entries.new /tmp/entries.old
 }
 
 # Delete toolchain versions the build does not use (several GB each), plus a few
@@ -226,6 +239,7 @@ shim_repo_manifest
 exec 1>&3 2>&4 3>&- 4>&-
 
 [ -f /tmp/heads.old ] || project_heads > /tmp/heads.old
+[ -f /tmp/entries.old ] || project_entries > /tmp/entries.old
 attempt=${ATTEMPT:-1}
 while :; do
     left=$(minutes_left)
