@@ -182,14 +182,14 @@ SHIM
 
 # The disk swap file is only needed for the memory-hungry analysis; zram stays.
 free_disk_swap() {
-    local avail f
-    avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
-    [ "${avail:-0}" -lt 12288 ] || return 0
+    local f
+    # Packaging grows out/ by 10+ GB; that space matters more than swap now
     for f in /swapfile2 /swapfile; do
         swapon --show=NAME --noheadings | grep -qx "$f" || continue
-        echo "Only ${avail}M free, dropping $f"
+        echo "Analysis done, dropping $f"
         sudo swapoff "$f" && sudo rm -f "$f"
     done
+    df -h / | tail -1
 }
 
 exec 3>&1 4>&2
