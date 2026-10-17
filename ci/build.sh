@@ -85,11 +85,18 @@ resync_changed() {
 # file the runner gets killed. Put it back if it was dropped and there is room.
 ensure_disk_swap() {
     local avail
-    swapon --show=NAME --noheadings | grep -qx /swapfile && return 0
     avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
-    [ "${avail:-0}" -ge 8192 ] || { echo "No room for the disk swap file (${avail}M free)"; return 0; }
-    echo "Re-creating the disk swap file for the analysis"
-    sudo fallocate -l 5G /swapfile && sudo chmod 600 /swapfile && sudo mkswap -q /swapfile && sudo swapon -p 10 /swapfile
+    if ! swapon --show=NAME --noheadings | grep -qx /swapfile && [ "${avail:-0}" -ge 8192 ]; then
+        echo "Re-creating the disk swap file for the analysis"
+        sudo fallocate -l 5G /swapfile && sudo chmod 600 /swapfile && sudo mkswap -q /swapfile && sudo swapon -p 10 /swapfile
+        avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
+    fi
+    # The analysis peaks well above RAM + zram; add more while there is room
+    if ! swapon --show=NAME --noheadings | grep -qx /swapfile2 && [ "${avail:-0}" -ge 10240 ]; then
+        echo "Adding a second swap file for the analysis (${avail}M free)"
+        sudo fallocate -l 6G /swapfile2 && sudo chmod 600 /swapfile2 && sudo mkswap -q /swapfile2 && sudo swapon -p 10 /swapfile2
+    fi
+    swapon --show
 }
 
 prune_tree() {
@@ -175,12 +182,14 @@ SHIM
 
 # The disk swap file is only needed for the memory-hungry analysis; zram stays.
 free_disk_swap() {
-    local avail
+    local avail f
     avail=$(df -BM --output=avail / | tail -1 | tr -dc 0-9)
-    if [ "${avail:-0}" -lt 8192 ] && swapon --show=NAME --noheadings | grep -qx /swapfile; then
-        echo "Only ${avail}M free, dropping the disk swap file"
-        sudo swapoff /swapfile && sudo rm -f /swapfile
-    fi
+    [ "${avail:-0}" -lt 12288 ] || return 0
+    for f in /swapfile2 /swapfile; do
+        swapon --show=NAME --noheadings | grep -qx "$f" || continue
+        echo "Only ${avail}M free, dropping $f"
+        sudo swapoff "$f" && sudo rm -f "$f"
+    done
 }
 
 exec 3>&1 4>&2

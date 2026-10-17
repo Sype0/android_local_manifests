@@ -88,8 +88,12 @@ jobs:
           git lfs install
 
       - name: Start resource monitor
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           nohup bash -c 'while true; do echo "== $(date -u +%T) load=$(cut -d" " -f1-3 /proc/loadavg)"; free -m | sed -n 2,3p; df -m / /build | tail -2; sleep 60; done' > /build/monitor.log 2>&1 &
+          # Live view on the ci-live branch, so a runner that dies still leaves a trace
+          nohup "$GITHUB_WORKSPACE/manifests/ci/live.sh" > /dev/null 2>&1 &
 
       - name: Init and sync sources
         working-directory: /build
