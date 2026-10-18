@@ -1,0 +1,101 @@
+run: https://github.com/Sype0/android_local_manifests/actions/runs/39105412836
+attempt: 1  rc: 0  state: success  time: 2026-10-18T08:19:53Z  minutes_left: 199
+/dev/root       145G  130G   15G  90% /
+/dev/loop0      400G   49G  350G  13% /build/src/out
+---- preparation ----
+== preparation, attempt 1 07:29:11
+Pruning prebuilts/clang/host/linux-x86/clang-r522817 (keeping: clang-r530567 clang-r547379)
+Pruning prebuilts/clang/host/linux-x86/clang-r536225 (keeping: clang-r530567 clang-r547379)
+Pruning prebuilts/rust/darwin-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/linux-musl-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/linux-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/windows-x86/1.82.0 (default is 1.83.0)
+Normalizing source mtimes
+Projects changed since the saved state: device/xiaomi/sepolicy device/xiaomi/topaz lineage/hudson lineage/mirror lineage/scripts lineage/wiki
+Restoring out/
+85G	out
+/dev/root       145G  126G   19G  88% /
+/dev/loop0      400G   40G  360G  10% /build/src/out
+cts present: yes
+---- errors ----
+---- tail ----
+[ 97% 3003/3074] //packages/modules/HealthFitness/service:service-healthfitness.impl packageCheck [apex34]
+[ 97% 3004/3074] //packages/modules/Media/apex/service:service-media-s.impl packageCheck [apex31]
+[ 97% 3005/3074] //packages/modules/OnDevicePersonalization/systemservice:service-ondevicepersonalization.impl packageCheck [apex33]
+[ 97% 3006/3074] //prebuilts/sdk:service-permission-incompatibilities.api.public.latest raw genrule.sbox.textproto
+[ 97% 3007/3074] //prebuilts/sdk:service-permission-incompatibilities.api.public.latest generate service-permission-incompatibilities.api.public.latest
+[ 97% 3008/3074] //prebuilts/sdk:service-permission-incompatibilities.api.system-server.latest raw genrule.sbox.textproto
+[ 97% 3009/3074] //prebuilts/sdk:service-permission-incompatibilities.api.system-server.latest generate service-permission-incompatibilities.api.system-server.latest
+[ 97% 3010/3074] //prebuilts/sdk:service-permission-removed.api.public.latest raw genrule.sbox.textproto
+[ 97% 3011/3074] //prebuilts/sdk:service-permission-removed.api.public.latest generate service-permission-removed.api.public.latest
+[ 97% 3012/3074] //prebuilts/sdk:service-permission-removed.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3013/3074] //prebuilts/sdk:service-permission-removed.api.system-server.latest generate service-permission-removed.api.system-server.latest
+[ 98% 3014/3074] //packages/modules/Permission/service:service-permission.impl packageCheck [apex30]
+[ 98% 3015/3074] //packages/modules/Permission/service:service-permission.stubs.source raw metalava.sbox.textproto
+[ 98% 3016/3074] //art/libartservice/service:service-art.stubs.source.system_server metalava merged
+[ 98% 3017/3074] //art/libartservice/service:service-art.stubs.source.system_server check current API
+[ 98% 3018/3074] //packages/modules/Permission/service:service-permission.stubs.source.system_server raw metalava.sbox.textproto
+[ 98% 3019/3074] //packages/modules/CrashRecovery/service:service-crashrecovery.stubs.source.system_server metalava merged
+[ 98% 3020/3074] //packages/modules/CrashRecovery/service:service-crashrecovery.stubs.source.system_server check current API
+[ 98% 3021/3074] //prebuilts/sdk:service-rkp-incompatibilities.api.public.latest raw genrule.sbox.textproto
+[ 98% 3022/3074] //prebuilts/sdk:service-rkp-incompatibilities.api.public.latest generate service-rkp-incompatibilities.api.public.latest
+[ 98% 3023/3074] //prebuilts/sdk:service-rkp-incompatibilities.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3024/3074] //prebuilts/sdk:service-rkp-incompatibilities.api.system-server.latest generate service-rkp-incompatibilities.api.system-server.latest
+[ 98% 3025/3074] //prebuilts/sdk:service-rkp-removed.api.public.latest raw genrule.sbox.textproto
+[ 98% 3026/3074] //prebuilts/sdk:service-rkp-removed.api.public.latest generate service-rkp-removed.api.public.latest
+[ 98% 3027/3074] //prebuilts/sdk:service-rkp-removed.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3028/3074] //prebuilts/sdk:service-rkp-removed.api.system-server.latest generate service-rkp-removed.api.system-server.latest
+[ 98% 3029/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.impl packageCheck [apex33]
+[ 98% 3030/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source raw metalava.sbox.textproto
+[ 98% 3031/3074] //packages/modules/Permission/service:service-permission.stubs.source metalava merged
+[ 98% 3032/3074] //packages/modules/Permission/service:service-permission.stubs.source check current API
+[ 98% 3033/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source.system_server raw metalava.sbox.textproto
+[ 98% 3034/3074] //packages/modules/Permission/service:service-permission.stubs.source.system_server metalava merged
+[ 98% 3035/3074] //packages/modules/Permission/service:service-permission.stubs.source.system_server check current API
+[ 98% 3036/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.public.latest raw genrule.sbox.textproto
+[ 98% 3037/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.public.latest generate service-sdksandbox-incompatibilities.api.public.latest
+[ 98% 3038/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3039/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.system-server.latest generate service-sdksandbox-incompatibilities.api.system-server.latest
+[ 98% 3040/3074] //prebuilts/sdk:service-sdksandbox-removed.api.public.latest raw genrule.sbox.textproto
+[ 98% 3041/3074] //prebuilts/sdk:service-sdksandbox-removed.api.public.latest generate service-sdksandbox-removed.api.public.latest
+[ 98% 3042/3074] //prebuilts/sdk:service-sdksandbox-removed.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3043/3074] //prebuilts/sdk:service-sdksandbox-removed.api.system-server.latest generate service-sdksandbox-removed.api.system-server.latest
+[ 99% 3044/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.impl packageCheck [apex33]
+[ 99% 3045/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source aidl
+[ 99% 3046/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source raw metalava.sbox.textproto
+[ 99% 3047/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source metalava merged
+[ 99% 3048/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source check current API
+[ 99% 3049/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server aidl
+[ 99% 3050/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server raw metalava.sbox.textproto
+[ 99% 3051/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source.system_server metalava merged
+[ 99% 3052/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source.system_server check current API
+[ 99% 3053/3074] //frameworks/base/services:services-non-updatable-stubs aidl
+[ 99% 3054/3074] //frameworks/base/services:services-non-updatable-stubs raw metalava.sbox.textproto
+[ 99% 3055/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source metalava merged
+[ 99% 3056/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source check current API
+[ 99% 3057/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source raw metalava.sbox.textproto
+[ 99% 3058/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server metalava merged
+[ 99% 3059/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server check current API
+[ 99% 3060/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable raw metalava.sbox.textproto
+[ 99% 3061/3074] //frameworks/base/api:test-api-stubs-docs-non-updatable raw metalava.sbox.textproto
+[ 99% 3062/3074] //packages/modules/Media/apex/framework:updatable-media packageCheck [apex31]
+[ 99% 3063/3074] touch out/soong/ndk_abi_dump.timestamp
+[ 99% 3064/3074] touch out/soong/ndk_abi_diff.timestamp
+[ 99% 3065/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source metalava merged
+external/icu/android_icu4j/src/main/java/android/icu/text/Transliterator.java:455: warning: Public class android.icu.text.Transliterator stripped of unavailable superclass android.icu.text.StringTransform (ErrorWhenNew) [HiddenSuperclass]
+external/icu/android_icu4j/src/main/java/android/icu/text/Transliterator.java:455: warning: Public class android.icu.text.Transliterator stripped of unavailable superclass android.icu.text.Transform (ErrorWhenNew) [HiddenSuperclass]
+external/icu/android_icu4j/src/main/java/android/icu/text/UCharacterIterator.java:30: warning: Public class android.icu.text.UCharacterIterator stripped of unavailable superclass android.icu.text.UForwardCharacterIterator (ErrorWhenNew) [HiddenSuperclass]
+[ 99% 3066/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source check current API
+[ 99% 3067/3074] //frameworks/base/services:services-non-updatable-stubs metalava merged
+[ 99% 3068/3074] //frameworks/base/services:services-non-updatable-stubs check current API
+[ 99% 3069/3074] //frameworks/base/api:module-lib-api-stubs-docs-non-updatable metalava merged
+[ 99% 3070/3074] //frameworks/base/api:module-lib-api-stubs-docs-non-updatable check current API
+[ 99% 3071/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable metalava merged
+frameworks/base/telecomm/java/android/telecom/TelecomManager.java:2853: warning: When a method overload is needed to target a specific UserHandle, callers should be directed to use Context.createPackageContextAsUser() and re-obtain the relevant Manager, and no new API should be added (ErrorWhenNew) [UserHandle]
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/1073a982314abb75e649a17771da5e1ec82dbc89/./out/api_lint_baseline.txt
+[ 99% 3072/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable check current API
+[ 99% 3073/3074] //frameworks/base/api:test-api-stubs-docs-non-updatable metalava merged
+[100% 3074/3074] //frameworks/base/api:test-api-stubs-docs-non-updatable check current API
+
+#### build completed successfully (20:10 (mm:ss)) ####
+
