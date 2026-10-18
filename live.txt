@@ -1,0 +1,78 @@
+run: https://github.com/Sype0/android_local_manifests/actions/runs/39105412836  2026-10-18T08:18:58Z
+               total        used        free      shared  buff/cache   available
+Mem:           15989        3830        6182          15        6338       12159
+Swap:          12287        5648        6639
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition  12G 5.5G  100
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       145G  130G   15G  90% /
+/dev/loop0      400G   49G  350G  13% /build/src/out
+---- monitor ----
+/dev/root         147719 133943     13761  91% /
+/dev/root         147719 133943     13761  91% /
+== 08:17:21 load=8.99 13.22 11.09
+Mem:           15989        5652        4243          15        6455       10337
+Swap:          12287        5651        6636
+/dev/root         147719 132790     14914  90% /
+/dev/root         147719 132790     14914  90% /
+== 08:18:21 load=6.89 11.91 10.78
+Mem:           15989        4693        5157          15        6500       11296
+Swap:          12287        5648        6639
+/dev/root         147719 132868     14835  90% /
+/dev/root         147719 132868     14835  90% /
+---- preparation ----
+== preparation, attempt 1 07:29:11
+Pruning prebuilts/clang/host/linux-x86/clang-r522817 (keeping: clang-r530567 clang-r547379)
+Pruning prebuilts/clang/host/linux-x86/clang-r536225 (keeping: clang-r530567 clang-r547379)
+Pruning prebuilts/rust/darwin-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/linux-musl-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/linux-x86/1.82.0 (default is 1.83.0)
+Pruning prebuilts/rust/windows-x86/1.82.0 (default is 1.83.0)
+Normalizing source mtimes
+Projects changed since the saved state: device/xiaomi/sepolicy device/xiaomi/topaz lineage/hudson lineage/mirror lineage/scripts lineage/wiki
+Restoring out/
+85G	out
+/dev/root       145G  126G   19G  88% /
+/dev/loop0      400G   40G  360G  10% /build/src/out
+cts present: yes
+---- build ----
+[ 98% 3038/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3039/3074] //prebuilts/sdk:service-sdksandbox-incompatibilities.api.system-server.latest generate service-sdksandbox-incompatibilities.api.system-server.latest
+[ 98% 3040/3074] //prebuilts/sdk:service-sdksandbox-removed.api.public.latest raw genrule.sbox.textproto
+[ 98% 3041/3074] //prebuilts/sdk:service-sdksandbox-removed.api.public.latest generate service-sdksandbox-removed.api.public.latest
+[ 98% 3042/3074] //prebuilts/sdk:service-sdksandbox-removed.api.system-server.latest raw genrule.sbox.textproto
+[ 98% 3043/3074] //prebuilts/sdk:service-sdksandbox-removed.api.system-server.latest generate service-sdksandbox-removed.api.system-server.latest
+[ 99% 3044/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.impl packageCheck [apex33]
+[ 99% 3045/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source aidl
+[ 99% 3046/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source raw metalava.sbox.textproto
+[ 99% 3047/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source metalava merged
+[ 99% 3048/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source check current API
+[ 99% 3049/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server aidl
+[ 99% 3050/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server raw metalava.sbox.textproto
+[ 99% 3051/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source.system_server metalava merged
+[ 99% 3052/3074] //packages/modules/RemoteKeyProvisioning/system-server:service-rkp.stubs.source.system_server check current API
+[ 99% 3053/3074] //frameworks/base/services:services-non-updatable-stubs aidl
+[ 99% 3054/3074] //frameworks/base/services:services-non-updatable-stubs raw metalava.sbox.textproto
+[ 99% 3055/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source metalava merged
+[ 99% 3056/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source check current API
+[ 99% 3057/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source raw metalava.sbox.textproto
+[ 99% 3058/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server metalava merged
+[ 99% 3059/3074] //packages/modules/AdServices/sdksandbox/service:service-sdksandbox.stubs.source.system_server check current API
+[ 99% 3060/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable raw metalava.sbox.textproto
+[ 99% 3061/3074] //frameworks/base/api:test-api-stubs-docs-non-updatable raw metalava.sbox.textproto
+[ 99% 3062/3074] //packages/modules/Media/apex/framework:updatable-media packageCheck [apex31]
+[ 99% 3063/3074] touch out/soong/ndk_abi_dump.timestamp
+[ 99% 3064/3074] touch out/soong/ndk_abi_diff.timestamp
+[ 99% 3065/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source metalava merged
+external/icu/android_icu4j/src/main/java/android/icu/text/Transliterator.java:455: warning: Public class android.icu.text.Transliterator stripped of unavailable superclass android.icu.text.StringTransform (ErrorWhenNew) [HiddenSuperclass]
+external/icu/android_icu4j/src/main/java/android/icu/text/Transliterator.java:455: warning: Public class android.icu.text.Transliterator stripped of unavailable superclass android.icu.text.Transform (ErrorWhenNew) [HiddenSuperclass]
+external/icu/android_icu4j/src/main/java/android/icu/text/UCharacterIterator.java:30: warning: Public class android.icu.text.UCharacterIterator stripped of unavailable superclass android.icu.text.UForwardCharacterIterator (ErrorWhenNew) [HiddenSuperclass]
+[ 99% 3066/3074] //external/icu/android_icu4j:stable.i18n.module.platform.api.stubs.source check current API
+[ 99% 3067/3074] //frameworks/base/services:services-non-updatable-stubs metalava merged
+[ 99% 3068/3074] //frameworks/base/services:services-non-updatable-stubs check current API
+[ 99% 3069/3074] //frameworks/base/api:module-lib-api-stubs-docs-non-updatable metalava merged
+[ 99% 3070/3074] //frameworks/base/api:module-lib-api-stubs-docs-non-updatable check current API
+[ 99% 3071/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable metalava merged
+frameworks/base/telecomm/java/android/telecom/TelecomManager.java:2853: warning: When a method overload is needed to target a specific UserHandle, callers should be directed to use Context.createPackageContextAsUser() and re-obtain the relevant Manager, and no new API should be added (ErrorWhenNew) 
+metalava wrote updated baseline to /build/src/out/soong/.temp/sbox/1073a982314abb75e649a17771da5e1ec82dbc89/./out/api_lint_baseline.txt
+[ 99% 3072/3074] //frameworks/base/api:system-api-stubs-docs-non-updatable check current API
